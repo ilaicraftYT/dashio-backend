@@ -1,0 +1,19 @@
+{
+  "name": "dashio-backend",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
+    "eslint": "^8.57.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@fastify/mongodb": "^8.0.0",
+    "@fastify/redis": "^6.1.1",
+    "fastify": "^4.26.2"
+  }
+}
