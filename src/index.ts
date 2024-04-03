@@ -1,10 +1,23 @@
-import Fastify, { type FastifyRequest } from "fastify"
+import Fastify from "fastify"
 import redis from "@fastify/redis"
 import mongodb from "@fastify/mongodb"
-import type { DashboardDocument, UpdateDashboardBody } from "./types"
+import router from "./routes"
+
+const envToLogger = {
+  development: {
+    transport: {
+      target: "pino-pretty",
+      options: {
+        translateTime: "HH:MM:ss Z",
+      },
+    },
+  },
+  production: true,
+  test: false,
+}
 
 const fastify = Fastify({
-  logger: true,
+  logger: envToLogger[process.env.PRODUCTION ? "production" : "development"] ?? true,
 })
 
 fastify.register(redis, {
@@ -19,76 +32,7 @@ fastify.register(mongodb, {
   forceClose: true,
 })
 
-fastify.post(
-  "/updateServers",
-  async (req: FastifyRequest<{ Body: string[] | unknown }>, res) => {
-    if (
-      !Array.isArray(req.body) ||
-      (req.body.length == 1 && typeof req.body[0] == typeof "")
-    ) {
-      res.status(400)
-      return { message: "Invalid body." }
-    }
-
-    if (!req.headers.authorization?.startsWith("Basic")) {
-      res.status(400)
-      return { message: "Authorization method not supported." }
-    }
-
-    const authHeader = req.headers.authorization?.split(" ")[1]
-    if (!authHeader) {
-      res.status(401)
-      return { message: "Authorization header not provided." }
-    }
-
-    const [botId, authKey] = Buffer.from(authHeader, "base64")
-      .toString()
-      .split(":")
-    if (!botId || !authKey) {
-      res.status(401)
-      return { message: "Bot ID or authorization key unspecified." }
-    }
-
-    const botData = await fastify.mongo.client
-      .db("dashio")
-      .collection<DashboardDocument>("dashboards")
-      .findOne({ _id: botId })
-
-    if (!botData || authKey !== botData.auth_key) {
-      res.status(401)
-      return { message: "Invalid bot ID or authorization key." }
-    }
-
-    fastify.redis.sadd(botId, req.body)
-    return { message: "OK" }
-  }
-)
-
-fastify.post(
-  "/private/updateDashboard",
-  async (req: FastifyRequest<{ Body: UpdateDashboardBody }>, res) => {
-    if (req.headers.authorization?.split(" ")[1] != process.env.FRONT_SECRET) {
-      res.status(401)
-      return { message: "Incorrect authorization key." }
-    }
-
-    const dash = await fastify.mongo.client
-      .db("dashio")
-      .collection<DashboardDocument>("dashboards")
-      .updateOne(
-        { _id: req.body.id },
-        {
-          data: JSON.stringify(req.body.data),
-        }
-      )
-
-    if (!dash) return { message: "Could not find specified record." }
-
-    return {
-      message: "OK"
-    }
-  }
-)
+fastify.register(router)
 
 fastify.listen({
   port: 3000,

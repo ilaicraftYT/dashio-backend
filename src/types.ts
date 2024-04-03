@@ -21,6 +21,7 @@ export interface DashboardPage {
 export interface DashboardOption {
   id: string;
   display_name: string;
+  description?: string;
   limits?: Partial<{
     /**
      * For text based inputs, it means the maximum characters allowed.
@@ -35,5 +36,5 @@ export interface DashboardOption {
      */
     min: number;
   }>;
-  name: "checkbox" | "input" | "textarea" | "multirow" | "slider";
+  name: "checkbox" | "toggle" | "input" | "textarea" | "multirow" | "slider";
 }

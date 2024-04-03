@@ -6,7 +6,8 @@
     "@types/bun": "latest",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
-    "eslint": "^8.57.0"
+    "eslint": "^8.57.0",
+    "pino-pretty": "^11.0.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
