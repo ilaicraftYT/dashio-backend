@@ -21,8 +21,7 @@ export interface DashboardPage {
 export interface DashboardOption {
   id: string;
   display_name: string;
-  return_type: boolean | string | string[] | number;
-  limits: Partial<{
+  limits?: Partial<{
     /**
      * For text based inputs, it means the maximum characters allowed.
      * For multiple-select inputs, the maximum of items allowed.
@@ -31,10 +30,10 @@ export interface DashboardOption {
     max: number;
     /**
      * For text based inputs, it means the minimum characters allowed.
-     * For multiple-select inputs, the minimum of items allowed.
+     * For multiple-select inputs, the minimum of items.
      * Means the minimum value available in the slider.
      */
     min: number;
   }>;
-  name: "boolean" | "input" | "textarea" | "multirow" | "slider";
+  name: "checkbox" | "input" | "textarea" | "multirow" | "slider";
 }
