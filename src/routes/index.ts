@@ -9,16 +9,16 @@ export default (
   _opts: unknown,
   done: (err?: Error) => void
 ) => {
-  fastify.post("/updateServers", async (req: FastifyRequest<{ Body: string[] | unknown }>, res) =>
-    await updateServersEndpoint(req, res, fastify)
-  )
+  fastify.post("/updateServers", async (req: FastifyRequest<{ Body: string[] | unknown }>, res) => {
+    return await updateServersEndpoint(req, res, fastify)
+  })
 
   fastify.post("/priv/updateDashboard", async (req: FastifyRequest<{ Body: UpdateDashboardBody }>, res) => {
-    await updateDashboardEndpoint(req, res, fastify)
+    return await updateDashboardEndpoint(req, res, fastify)
   })
 
   fastify.put("/priv/insertDashboard", async (req: FastifyRequest<{ Body: DashboardDocument }>, res) => {
-    await insertDashboardEndpoint(req, res, fastify)
+    return await insertDashboardEndpoint(req, res, fastify)
   })
   done()
 }
