@@ -20,5 +20,6 @@ export default (
   fastify.put("/priv/insertDashboard", async (req: FastifyRequest<{ Body: DashboardDocument }>, res) => {
     return await insertDashboardEndpoint(req, res, fastify)
   })
+
   done()
 }

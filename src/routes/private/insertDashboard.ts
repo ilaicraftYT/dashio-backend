@@ -24,7 +24,7 @@ export default async function insertDashboardEndpoint(
   await mongo.insertOne({
     _id: req.body._id,
     display_name: req.body.display_name,
-    data: req.body.data,
+    data: "{}",
     auth_key: r,
     premium: false,
     owner_id: req.body.owner_id
