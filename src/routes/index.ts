@@ -1,7 +1,8 @@
 import type { FastifyRequest, FastifyInstance } from "fastify"
 import updateServersEndpoint from "./updateServers"
-import type { UpdateDashboardBody } from "../types"
+import type { DashboardDocument, UpdateDashboardBody } from "../types"
 import updateDashboardEndpoint from "./private/updateDashboard"
+import insertDashboardEndpoint from "./private/insertDashboard"
 
 export default (
   fastify: FastifyInstance,
@@ -14,6 +15,10 @@ export default (
 
   fastify.post("/priv/updateDashboard", async (req: FastifyRequest<{ Body: UpdateDashboardBody }>, res) => {
     await updateDashboardEndpoint(req, res, fastify)
+  })
+
+  fastify.put("/priv/insertDashboard", async (req: FastifyRequest<{ Body: DashboardDocument }>, res) => {
+    await insertDashboardEndpoint(req, res, fastify)
   })
   done()
 }

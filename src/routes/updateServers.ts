@@ -1,7 +1,11 @@
 import type { FastifyRequest, FastifyInstance, FastifyReply } from "fastify"
 import type { DashboardDocument } from "../types"
 
-export default async function updateServersEndpoint(req: FastifyRequest<{ Body: string[] | unknown }>, res: FastifyReply, fastify: FastifyInstance) {
+export default async function updateServersEndpoint(
+  req: FastifyRequest<{ Body: string[] | unknown }>,
+  res: FastifyReply,
+  fastify: FastifyInstance
+) {
   if (
     !Array.isArray(req.body) ||
     (req.body.length == 1 && typeof req.body[0] == typeof "")

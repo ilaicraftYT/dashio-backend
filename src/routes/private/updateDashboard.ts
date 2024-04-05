@@ -2,7 +2,11 @@ import type { FastifyRequest, FastifyInstance, FastifyReply } from "fastify"
 import type { DashboardDocument } from "../../types"
 import type { UpdateDashboardBody } from "../../types"
 
-export default async function updateDashboardEndpoint(req: FastifyRequest<{ Body: UpdateDashboardBody }>, res: FastifyReply, fastify: FastifyInstance) {
+export default async function updateDashboardEndpoint(
+  req: FastifyRequest<{ Body: UpdateDashboardBody }>,
+  res: FastifyReply,
+  fastify: FastifyInstance
+) {
   if (!req.headers.authorization || req.headers.authorization?.split(" ")[1] != process.env.FRONT_SECRET) {
     res.status(401)
     return { message: "Incorrect authorization key." }

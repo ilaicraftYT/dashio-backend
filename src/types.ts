@@ -4,6 +4,7 @@ export interface DashboardDocument {
   data: string;
   auth_key: string;
   premium: boolean;
+  owner_id: string;
 }
 
 export interface UpdateDashboardBody {
